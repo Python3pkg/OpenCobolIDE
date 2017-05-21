@@ -394,7 +394,7 @@ class FoldingPanel(Panel):
         if not TextBlockHelper.is_fold_trigger(block):
             # search level of next non blank line
             while block.text().strip() == '' and block.isValid():
-                block = block.next()
+                block = next(block)
             ref_lvl = TextBlockHelper.get_fold_lvl(block) - 1
             block = original
             while (block.blockNumber() and
@@ -740,7 +740,7 @@ class FoldingPanel(Panel):
             if block == last and block.text().strip() == '':
                 block.setVisible(True)
                 self._show_previous_blank_lines(block)
-            block = block.next()
+            block = next(block)
         self._refresh_editor_and_scrollbars()
         tc = self.editor.textCursor()
         tc.movePosition(tc.Start)
@@ -763,7 +763,7 @@ class FoldingPanel(Panel):
         while block.isValid():
             TextBlockHelper.set_collapsed(block, False)
             block.setVisible(True)
-            block = block.next()
+            block = next(block)
         self._clear_block_deco()
         self._refresh_editor_and_scrollbars()
         self.expand_all_triggered.emit()

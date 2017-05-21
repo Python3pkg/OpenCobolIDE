@@ -379,9 +379,9 @@ class CobolController(Controller):
         else:
             pyqode_console = [pyqode_console]
         env = os.environ.copy()
-        for k, v in Settings().run_environemnt.items():
+        for k, v in list(Settings().run_environemnt.items()):
             env[k] = v
-        if 'PATH' not in Settings().run_environemnt.keys():
+        if 'PATH' not in list(Settings().run_environemnt.keys()):
             env['PATH'] = GnuCobolCompiler.setup_process_environment().value(
                 'PATH')
         if file_type == FileType.MODULE:
@@ -466,7 +466,7 @@ class CobolController(Controller):
                 item.setEnabled(False)
             path = GnuCobolCompiler.setup_process_environment().value('PATH')
             env = Settings().run_environemnt
-            if 'PATH' not in env.keys():
+            if 'PATH' not in list(env.keys()):
                 env['PATH'] = path
             if file_type == FileType.MODULE:
                 cobcrun = system.which('cobcrun')

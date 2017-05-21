@@ -199,7 +199,7 @@ class SymbolMatcherMode(Mode):
                     return True
                 elif info.character == self.SYMBOLS[symbol][CLOSE]:
                     cpt -= 1
-            current_block = current_block.next()
+            current_block = next(current_block)
             i = 0
         return False
 

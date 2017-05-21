@@ -44,10 +44,10 @@ Many other constants may be defined; these may be used in calls to
 the setsockopt() and getsockopt() methods.
 """
 
-from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import division
-from __future__ import absolute_import
+
+
+
+
 from future.builtins import super
 
 import _socket

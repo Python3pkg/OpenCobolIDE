@@ -3,10 +3,10 @@
 # Contact: email-sig@python.org
 
 """Various types of useful iterators and generators."""
-from __future__ import print_function
-from __future__ import unicode_literals
-from __future__ import division
-from __future__ import absolute_import
+
+
+
+
 
 __all__ = [
     'body_line_iterator',

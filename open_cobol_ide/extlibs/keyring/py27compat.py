@@ -5,7 +5,7 @@ no longer required.
 try:
     import configparser
 except ImportError:
-    import ConfigParser as configparser
+    import configparser as configparser
 
 try:
     input = raw_input
@@ -13,17 +13,17 @@ except NameError:
     input = input
 
 try:
-    unicode_str = unicode
+    unicode_str = str
 except NameError:
     unicode_str = str
 
 try:
-    import cPickle as pickle
+    import pickle as pickle
 except ImportError:
     import pickle
 
 try:
-    from itertools import ifilter as filter
+    
 except ImportError:
     filter = filter
 
@@ -42,4 +42,4 @@ def add_metaclass(metaclass):
 try:
     import builtins
 except ImportError:
-    import __builtin__ as builtins
+    import builtins as builtins

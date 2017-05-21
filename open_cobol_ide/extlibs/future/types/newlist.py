@@ -88,7 +88,7 @@ class newlist(with_metaclass(BaseNewList, _builtin_list)):
         """
         return list(self)
 
-    def __nonzero__(self):
+    def __bool__(self):
         return len(self) > 0
 
 

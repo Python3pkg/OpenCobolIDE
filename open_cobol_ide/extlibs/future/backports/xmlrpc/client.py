@@ -535,7 +535,7 @@ class Marshaller(object):
             # because we don't know how to marshal these types
             # (e.g. a string sub-class)
             for type_ in type(value).__mro__:
-                if type_ in self.dispatch.keys():
+                if type_ in list(self.dispatch.keys()):
                     raise TypeError("cannot marshal %s objects" % type(value))
             # XXX(twouters): using "_arbitrary_instance" as key as a quick-fix
             # for the p3yk merge, this should probably be fixed more neatly.
@@ -606,7 +606,7 @@ class Marshaller(object):
         self.memo[i] = None
         dump = self.__dump
         write("<value><struct>\n")
-        for k, v in value.items():
+        for k, v in list(value.items()):
             write("<member>\n")
             if not isinstance(k, str):
                 raise TypeError("dictionary key must be string")

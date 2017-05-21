@@ -58,7 +58,7 @@ def embed_packages(packages):
             dest = os.path.join(BUILD, dirname)
             if 'pyqode' in package.__file__:
                 dest = os.path.join(BUILD, 'pyqode', dirname)
-            print('copying %s to %s' % (src, dest))
+            print(('copying %s to %s' % (src, dest)))
             copy_tree(src, dest)
             if 'pyqode' in package.__file__:
                 with open(os.path.join(
@@ -68,7 +68,7 @@ def embed_packages(packages):
             # single module package, copy it directly
             src = package.__file__
             dest = BUILD
-            print('copying %s to %s' % (src, dest))
+            print(('copying %s to %s' % (src, dest)))
             shutil.copy(src, dest)
 
     with open(os.path.join(BUILD, 'readme.rst'), 'w') as f:

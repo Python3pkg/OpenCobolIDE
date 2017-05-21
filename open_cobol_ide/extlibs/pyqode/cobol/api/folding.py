@@ -74,7 +74,7 @@ class CobolFoldDetector(FoldDetector):
                     pblock = pblock.previous()
                     ptext = self.normalize_text(pblock.text())
                     pindent = self.get_indent(ptext)
-                lvl = TextBlockHelper.get_fold_lvl(pblock.next())
+                lvl = TextBlockHelper.get_fold_lvl(next(pblock))
             else:
                 lvl = OFFSET_OTHER + indent
 

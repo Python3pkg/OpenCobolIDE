@@ -104,7 +104,7 @@ server.register_function(pow)
 server.handle_request()
 """
 
-from __future__ import absolute_import, division, print_function, unicode_literals
+
 from future.builtins import int, str
 
 # Written by Brian Quinlan (brian@sweetapp.com).
@@ -120,6 +120,7 @@ import re
 import pydoc
 import inspect
 import traceback
+import collections
 try:
     import fcntl
 except ImportError:
@@ -155,7 +156,7 @@ def list_public_methods(obj):
 
     return [member for member in dir(obj)
                 if not member.startswith('_') and
-                    callable(getattr(obj, member))]
+                    isinstance(getattr(obj, member), collections.Callable)]
 
 class SimpleXMLRPCDispatcher(object):
     """Mix-in class that dispatches XML-RPC requests.
@@ -800,7 +801,7 @@ class ServerHTMLDoc(pydoc.HTMLDoc):
         """Produce HTML documentation for an XML-RPC server."""
 
         fdict = {}
-        for key, value in methods.items():
+        for key, value in list(methods.items()):
             fdict[key] = '#-' + key
             fdict[value] = fdict[key]
 

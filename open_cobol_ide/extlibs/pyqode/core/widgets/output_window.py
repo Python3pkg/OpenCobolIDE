@@ -366,9 +366,9 @@ class OutputWindow(CodeEdit):
         environ = self._process.processEnvironment()
         if env is None:
             env = {}
-        for k, v in os.environ.items():
+        for k, v in list(os.environ.items()):
             environ.insert(k, v)
-        for k, v in env.items():
+        for k, v in list(env.items()):
             environ.insert(k, v)
         if sys.platform != 'win32':
             environ.insert('TERM', 'xterm')
@@ -1148,8 +1148,8 @@ class OutputFormatter(object):
             try:
                 func = getattr(self, '_%s' % operation.command)
             except AttributeError:
-                print('command not implemented: %r - %r' % (
-                    operation.command, operation.data))
+                print(('command not implemented: %r - %r' % (
+                    operation.command, operation.data)))
             else:
                 try:
                     func(operation.data)

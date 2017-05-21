@@ -21,7 +21,7 @@ LEVELS_VALUES = {
 }
 
 
-LEVEL_NAMES = {v: k for k, v in LEVELS_VALUES.items()}
+LEVEL_NAMES = {v: k for k, v in list(LEVELS_VALUES.items())}
 
 
 class DlgAbout(QtWidgets.QDialog, dlg_about_ui.Ui_Dialog):
@@ -58,7 +58,7 @@ class DlgAbout(QtWidgets.QDialog, dlg_about_ui.Ui_Dialog):
                 ':/ide-icons/rc/dialog-information.png')))
 
         for i, (name, version) in enumerate(
-                sorted(DlgAbout.get_runtime_env().items(),
+                sorted(list(DlgAbout.get_runtime_env().items()),
                        key=lambda x: x[0])):
             item = QtWidgets.QTableWidgetItem(name)
             self.tbwVersions.setVerticalHeaderItem(i, item)

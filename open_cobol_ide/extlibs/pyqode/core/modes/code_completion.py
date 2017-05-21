@@ -42,7 +42,7 @@ class SubsequenceSortFilterProxyModel(QtCore.QSortFilterProxyModel):
             flags = re.IGNORECASE
         else:
             flags = 0
-        for i in reversed(range(1, len(prefix) + 1)):
+        for i in reversed(list(range(1, len(prefix) + 1))):
             ptrn = '.*%s.*%s' % (prefix[0:i], prefix[i:])
             try:
                 self.filter_patterns.append(re.compile(ptrn, flags))
@@ -69,9 +69,9 @@ class SubsequenceSortFilterProxyModel(QtCore.QSortFilterProxyModel):
                 return prefix in completion
             except ValueError:
                 return False
-        for i, patterns in enumerate(zip(self.filter_patterns,
+        for i, patterns in enumerate(list(zip(self.filter_patterns,
                                          self.filter_patterns_case_sensitive,
-                                         self.sort_patterns)):
+                                         self.sort_patterns))):
             pattern, pattern_case, sort_pattern = patterns
             match = re.match(pattern, completion)
             if match:

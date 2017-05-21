@@ -18,9 +18,9 @@ exception.  Instead, when it finds something unexpected, it adds a 'defect' to
 the current message.  Defects are just instances that live on the message
 object's .defects attribute.
 """
-from __future__ import unicode_literals
-from __future__ import division
-from __future__ import absolute_import
+
+
+
 from future.builtins import object, range, super
 from future.utils import implements_iterator, PY3
 
@@ -162,7 +162,7 @@ class FeedParser(object):
         if PY3:
             self._parse = self._parsegen().__next__
         else:
-            self._parse = self._parsegen().next
+            self._parse = self._parsegen().__next__
         self._cur = None
         self._last = None
         self._headersonly = False

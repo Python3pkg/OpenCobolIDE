@@ -32,7 +32,7 @@ Note that these are also available in the standard library
 the standard library version is not portable, nor anywhere near complete.
 """
 
-from __future__ import division, absolute_import, print_function
+
 
 import itertools
 from future import utils

@@ -21,7 +21,7 @@ class ImportKiller(object):
         sys.meta_path.insert(0, self)
     def __exit__(self, *args):
         sys.meta_path.remove(self)
-        for key, value in self.original.items():
+        for key, value in list(self.original.items()):
             if value is not None:
                 sys.modules[key] = value
 
@@ -32,7 +32,7 @@ def NoNoneDictMutator(destination, **changes):
     A None is not a valid value for the destination, and so means that the
     associated name should be removed."""
     original = {}
-    for key, value in changes.items():
+    for key, value in list(changes.items()):
         original[key] = destination.get(key)
         if value is None:
             if key in destination:
@@ -40,7 +40,7 @@ def NoNoneDictMutator(destination, **changes):
         else:
             destination[key] = value
     yield
-    for key, value in original.items():
+    for key, value in list(original.items()):
         if value is None:
             if key in destination:
                 del destination[key]

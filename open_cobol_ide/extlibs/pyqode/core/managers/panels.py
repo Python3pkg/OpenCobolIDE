@@ -109,25 +109,25 @@ class PanelsManager(Manager):
         """
         Returns the list of installed panel names.
         """
-        return self._modes.keys()
+        return list(self._modes.keys())
 
     def values(self):
         """
         Returns the list of installed panels.
         """
-        return self._modes.values()
+        return list(self._modes.values())
 
     def __iter__(self):
         lst = []
-        for zone, zone_dict in self._panels.items():
-            for name, panel in zone_dict.items():
+        for zone, zone_dict in list(self._panels.items()):
+            for name, panel in list(zone_dict.items()):
                 lst.append(panel)
         return iter(lst)
 
     def __len__(self):
         lst = []
-        for zone, zone_dict in self._panels.items():
-            for name, panel in zone_dict.items():
+        for zone, zone_dict in list(self._panels.items()):
+            for name, panel in list(zone_dict.items()):
                 lst.append(panel)
         return len(lst)
 
@@ -214,7 +214,7 @@ class PanelsManager(Manager):
         helper = TextHelper(self.editor)
         if not self:
             return
-        for zones_id, zone in self._panels.items():
+        for zones_id, zone in list(self._panels.items()):
             if zones_id == Panel.Position.TOP or \
                zones_id == Panel.Position.BOTTOM:
                 continue

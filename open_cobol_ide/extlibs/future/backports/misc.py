@@ -12,7 +12,7 @@ for Python 2.6/2.7.
 - functools.cmp_to_key     (for Python 2.6)
 """
 
-from __future__ import absolute_import
+
 
 import subprocess
 from math import ceil as oldceil
@@ -49,9 +49,9 @@ if PY3:
         from _dummy_thread import get_ident
 else:
     try:
-        from thread import get_ident
+        from _thread import get_ident
     except ImportError:
-        from dummy_thread import get_ident
+        from _dummy_thread import get_ident
 
 
 def recursive_repr(fillvalue='...'):
@@ -121,7 +121,7 @@ class OrderedDict(dict):
         except AttributeError:
             self.__hardroot = _Link()
             self.__root = root = _proxy(self.__hardroot)
-            root.prev = root.next = root
+            root.prev = root.__next__ = root
             self.__map = {}
         self.__update(*args, **kwds)
 
@@ -146,7 +146,7 @@ class OrderedDict(dict):
         dict_delitem(self, key)
         link = self.__map.pop(key)
         link_prev = link.prev
-        link_next = link.next
+        link_next = link.__next__
         link_prev.next = link_next
         link_next.prev = link_prev
 
@@ -154,10 +154,10 @@ class OrderedDict(dict):
         'od.__iter__() <==> iter(od)'
         # Traverse the linked list in order.
         root = self.__root
-        curr = root.next
+        curr = root.__next__
         while curr is not root:
             yield curr.key
-            curr = curr.next
+            curr = curr.__next__
 
     def __reversed__(self):
         'od.__reversed__() <==> reversed(od)'
@@ -171,7 +171,7 @@ class OrderedDict(dict):
     def clear(self):
         'od.clear() -> None.  Remove all items from od.'
         root = self.__root
-        root.prev = root.next = root
+        root.prev = root.__next__ = root
         self.__map.clear()
         dict.clear(self)
 
@@ -189,8 +189,8 @@ class OrderedDict(dict):
             link_prev.next = root
             root.prev = link_prev
         else:
-            link = root.next
-            link_next = link.next
+            link = root.__next__
+            link_next = link.__next__
             root.next = link_next
             link_next.prev = root
         key = link.key
@@ -207,7 +207,7 @@ class OrderedDict(dict):
         '''
         link = self.__map[key]
         link_prev = link.prev
-        link_next = link.next
+        link_next = link.__next__
         link_prev.next = link_next
         link_next.prev = link_prev
         root = self.__root
@@ -217,7 +217,7 @@ class OrderedDict(dict):
             link.next = root
             last.next = root.prev = link
         else:
-            first = root.next
+            first = root.__next__
             link.prev = root
             link.next = first
             root.next = first.prev = link
@@ -272,7 +272,7 @@ class OrderedDict(dict):
         inst_dict = vars(self).copy()
         for k in vars(OrderedDict()):
             inst_dict.pop(k, None)
-        return self.__class__, (), inst_dict or None, None, iter(self.items())
+        return self.__class__, (), inst_dict or None, None, iter(list(self.items()))
 
     def copy(self):
         'od.copy() -> a shallow copy of od'
@@ -404,8 +404,8 @@ class Counter(dict):
         '''
         # Emulate Bag.sortedByCount from Smalltalk
         if n is None:
-            return sorted(self.items(), key=_itemgetter(1), reverse=True)
-        return _heapq.nlargest(n, self.items(), key=_itemgetter(1))
+            return sorted(list(self.items()), key=_itemgetter(1), reverse=True)
+        return _heapq.nlargest(n, list(self.items()), key=_itemgetter(1))
 
     def elements(self):
         '''Iterator over elements repeating each as many times as its count.
@@ -427,7 +427,7 @@ class Counter(dict):
 
         '''
         # Emulate Bag.do from Smalltalk and Multiset.begin from C++.
-        return _chain.from_iterable(_starmap(_repeat, self.items()))
+        return _chain.from_iterable(_starmap(_repeat, list(self.items())))
 
     # Override dict methods where necessary
 
@@ -470,7 +470,7 @@ class Counter(dict):
             if isinstance(iterable, Mapping):
                 if self:
                     self_get = self.get
-                    for elem, count in iterable.items():
+                    for elem, count in list(iterable.items()):
                         self[elem] = count + self_get(elem, 0)
                 else:
                     super(Counter, self).update(iterable) # fast path when counter is empty
@@ -506,7 +506,7 @@ class Counter(dict):
         if iterable is not None:
             self_get = self.get
             if isinstance(iterable, Mapping):
-                for elem, count in iterable.items():
+                for elem, count in list(iterable.items()):
                     self[elem] = self_get(elem, 0) - count
             else:
                 for elem in iterable:
@@ -555,11 +555,11 @@ class Counter(dict):
         if not isinstance(other, Counter):
             return NotImplemented
         result = Counter()
-        for elem, count in self.items():
+        for elem, count in list(self.items()):
             newcount = count + other[elem]
             if newcount > 0:
                 result[elem] = newcount
-        for elem, count in other.items():
+        for elem, count in list(other.items()):
             if elem not in self and count > 0:
                 result[elem] = count
         return result
@@ -574,11 +574,11 @@ class Counter(dict):
         if not isinstance(other, Counter):
             return NotImplemented
         result = Counter()
-        for elem, count in self.items():
+        for elem, count in list(self.items()):
             newcount = count - other[elem]
             if newcount > 0:
                 result[elem] = newcount
-        for elem, count in other.items():
+        for elem, count in list(other.items()):
             if elem not in self and count < 0:
                 result[elem] = 0 - count
         return result
@@ -593,12 +593,12 @@ class Counter(dict):
         if not isinstance(other, Counter):
             return NotImplemented
         result = Counter()
-        for elem, count in self.items():
+        for elem, count in list(self.items()):
             other_count = other[elem]
             newcount = other_count if count < other_count else count
             if newcount > 0:
                 result[elem] = newcount
-        for elem, count in other.items():
+        for elem, count in list(other.items()):
             if elem not in self and count > 0:
                 result[elem] = count
         return result
@@ -613,7 +613,7 @@ class Counter(dict):
         if not isinstance(other, Counter):
             return NotImplemented
         result = Counter()
-        for elem, count in self.items():
+        for elem, count in list(self.items()):
             other_count = other[elem]
             newcount = count if count < other_count else other_count
             if newcount > 0:
@@ -633,7 +633,7 @@ class Counter(dict):
 
     def _keep_positive(self):
         '''Internal method to strip elements with a negative or zero count'''
-        nonpositive = [elem for elem, count in self.items() if not count > 0]
+        nonpositive = [elem for elem, count in list(self.items()) if not count > 0]
         for elem in nonpositive:
             del self[elem]
         return self
@@ -647,7 +647,7 @@ class Counter(dict):
         Counter({'b': 4, 'c': 2, 'a': 1})
 
         '''
-        for elem, count in other.items():
+        for elem, count in list(other.items()):
             self[elem] += count
         return self._keep_positive()
 
@@ -660,7 +660,7 @@ class Counter(dict):
         Counter({'b': 2, 'a': 1})
 
         '''
-        for elem, count in other.items():
+        for elem, count in list(other.items()):
             self[elem] -= count
         return self._keep_positive()
 
@@ -673,7 +673,7 @@ class Counter(dict):
         Counter({'b': 3, 'c': 2, 'a': 1})
 
         '''
-        for elem, other_count in other.items():
+        for elem, other_count in list(other.items()):
             count = self[elem]
             if other_count > count:
                 self[elem] = other_count
@@ -688,7 +688,7 @@ class Counter(dict):
         Counter({'b': 1})
 
         '''
-        for elem, count in self.items():
+        for elem, count in list(self.items()):
             other_count = other[elem]
             if other_count < count:
                 self[elem] = other_count

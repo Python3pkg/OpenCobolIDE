@@ -23,9 +23,9 @@ class AutoCompleteMode(Mode):
         #: Auto complete mapping, maps input key with completion text.
         self.MAPPING = {'"': '"', "'": "'", "(": ")", "{": "}", "[": "]"}
         #: The format to use for each symbol in mapping when there is a selection
-        self.SELECTED_QUOTES_FORMATS = {key: '%s%s%s' for key in self.MAPPING.keys()}
+        self.SELECTED_QUOTES_FORMATS = {key: '%s%s%s' for key in list(self.MAPPING.keys())}
         #: The format to use for each symbol in mapping when there is no selection
-        self.QUOTES_FORMATS = {key: '%s' for key in self.MAPPING.keys()}
+        self.QUOTES_FORMATS = {key: '%s' for key in list(self.MAPPING.keys())}
         self.logger = logging.getLogger(__name__)
         self._ignore_post = False
 
@@ -48,8 +48,8 @@ class AutoCompleteMode(Mode):
                 next_char = TextHelper(self.editor).get_right_character()
                 if txt in self.MAPPING:
                     to_insert = self.MAPPING[txt]
-                    if (not next_char or next_char in self.MAPPING.keys() or
-                            next_char in self.MAPPING.values() or
+                    if (not next_char or next_char in list(self.MAPPING.keys()) or
+                            next_char in list(self.MAPPING.values()) or
                             next_char.isspace()):
                         TextHelper(self.editor).insert_text(
                             self.QUOTES_FORMATS[txt] % to_insert)
@@ -62,7 +62,7 @@ class AutoCompleteMode(Mode):
         assert isinstance(cursor, QtGui.QTextCursor)
         if cursor.hasSelection():
             # quoting of selected text
-            if event.text() in self.MAPPING.keys():
+            if event.text() in list(self.MAPPING.keys()):
                 first = event.text()
                 last = self.MAPPING[event.text()]
                 cursor.insertText(

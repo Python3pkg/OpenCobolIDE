@@ -791,7 +791,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         path = path.split('#',1)[0]
         path = posixpath.normpath(urllib_parse.unquote(path))
         words = path.split('/')
-        words = filter(None, words)
+        words = [_f for _f in words if _f]
         path = os.getcwd()
         for word in words:
             drive, word = os.path.splitdrive(word)
@@ -1098,7 +1098,7 @@ class CGIHTTPRequestHandler(SimpleHTTPRequestHandler):
         ua = self.headers.get('user-agent')
         if ua:
             env['HTTP_USER_AGENT'] = ua
-        co = filter(None, self.headers.get_all('cookie', []))
+        co = [_f for _f in self.headers.get_all('cookie', []) if _f]
         cookie_str = ', '.join(co)
         if cookie_str:
             env['HTTP_COOKIE'] = cookie_str
@@ -1203,7 +1203,7 @@ def test(HandlerClass = BaseHTTPRequestHandler,
     httpd = ServerClass(server_address, HandlerClass)
 
     sa = httpd.socket.getsockname()
-    print("Serving HTTP on", sa[0], "port", sa[1], "...")
+    print(("Serving HTTP on", sa[0], "port", sa[1], "..."))
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:

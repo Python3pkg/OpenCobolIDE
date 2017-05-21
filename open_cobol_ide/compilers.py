@@ -88,7 +88,7 @@ def run_command(pgm, args, working_dir=''):
                     p.processEnvironment().toStringList())
     p.start(pgm, args)
 
-    print(' '.join([pgm] + args))
+    print((' '.join([pgm] + args)))
 
     p.waitForFinished()
 
@@ -211,7 +211,7 @@ class GnuCobolCompiler(QtCore.QObject):
     @staticmethod
     def setup_process_environment():
         env = QtCore.QProcessEnvironment()
-        for k, v in os.environ.items():
+        for k, v in list(os.environ.items()):
             env.insert(k, v)
 
         s = Settings()
@@ -223,8 +223,8 @@ class GnuCobolCompiler(QtCore.QObject):
         if not s.vcvarsall:
             PATH = PATH + os.pathsep + os.environ['PATH']
         else:
-            for k, v in msvc.get_vc_vars(
-                    s.vcvarsall, s.vcvarsall_arch).items():
+            for k, v in list(msvc.get_vc_vars(
+                    s.vcvarsall, s.vcvarsall_arch).items()):
                 if k == 'PATH':
                     PATH = PATH + os.pathsep + v
                 else:

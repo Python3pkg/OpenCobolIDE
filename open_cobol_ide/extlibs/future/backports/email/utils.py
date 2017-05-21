@@ -4,9 +4,9 @@
 
 """Miscellaneous utilities."""
 
-from __future__ import unicode_literals
-from __future__ import division
-from __future__ import absolute_import
+
+
+
 from future import utils
 from future.builtins import bytes, int, str
 
@@ -312,7 +312,7 @@ def decode_params(params):
         else:
             new_params.append((name, '"%s"' % quote(value)))
     if rfc2231_params:
-        for name, continuations in rfc2231_params.items():
+        for name, continuations in list(rfc2231_params.items()):
             value = []
             extended = False
             # Sort by number

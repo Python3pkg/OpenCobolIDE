@@ -3,9 +3,9 @@
 # Contact: email-sig@python.org
 
 """Base class for MIME multipart/* type messages."""
-from __future__ import unicode_literals
-from __future__ import division
-from __future__ import absolute_import
+
+
+
 
 __all__ = ['MIMEMultipart']
 

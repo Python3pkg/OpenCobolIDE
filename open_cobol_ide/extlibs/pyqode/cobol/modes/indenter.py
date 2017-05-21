@@ -63,7 +63,7 @@ class IndenterMode(Mode):
                     cursor.insertText(" ")
             else:
                 cursor.insertText('\t')
-            block = block.next()
+            block = next(block)
             i += 1
         cursor.endEditBlock()
 
@@ -102,7 +102,7 @@ class IndenterMode(Mode):
                 spaces = self.count_deletable_spaces(c, max_spaces)
                 for _ in range(spaces):
                     c.deletePreviousChar()
-            block = block.next()
+            block = next(block)
             i += 1
         return cursor
 

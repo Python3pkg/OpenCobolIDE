@@ -18,7 +18,7 @@ try:
     import socketserver
     PY33 = True
 except ImportError:
-    import SocketServer as socketserver
+    import socketserver as socketserver
     PY33 = False
 
 
@@ -168,8 +168,8 @@ class JsonServer(socketserver.TCPServer):
         self._Handler.srv = self
         socketserver.TCPServer.__init__(
             self, ('127.0.0.1', int(args.port)), self._Handler)
-        print('started on 127.0.0.1:%d' % int(args.port))
-        print('running with python %d.%d.%d' % (sys.version_info[:3]))
+        print(('started on 127.0.0.1:%d' % int(args.port)))
+        print(('running with python %d.%d.%d' % (sys.version_info[:3])))
         self._heartbeat_thread = threading.Thread(target=self.heartbeat)
         self._heartbeat_thread.setDaemon(True)
         self._heartbeat_thread.start()

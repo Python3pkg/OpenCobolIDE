@@ -25,7 +25,7 @@ def main():
     pyqode-console main function.
     """
     global program, args, ret
-    print(os.getcwd())
+    print((os.getcwd()))
     ret = 0
     if '--help' in sys.argv or '-h' in sys.argv or len(sys.argv) == 1:
         print(__doc__)
@@ -36,12 +36,12 @@ def main():
             ret = subprocess.call([program] + args)
         else:
             ret = subprocess.call([program])
-    print('\nProcess terminated with exit code %d' % ret)
+    print(('\nProcess terminated with exit code %d' % ret))
     prompt = 'Press ENTER to close this window...'
     if sys.version_info[0] == 3:
-        input(prompt)
+        eval(input(prompt))
     else:
-        raw_input(prompt)
+        input(prompt)
     sys.exit(ret)
 
 

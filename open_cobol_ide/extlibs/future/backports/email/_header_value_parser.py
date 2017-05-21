@@ -66,10 +66,10 @@ It is returned in place of lists of (ctext/quoted-pair) and
 
 XXX: provide complete list of token types.
 """
-from __future__ import print_function
-from __future__ import unicode_literals
-from __future__ import division
-from __future__ import absolute_import
+
+
+
+
 from future.builtins import int, range, str, super, list
 
 import re
@@ -1108,7 +1108,7 @@ class MimeParameters(TokenList):
             if name not in params:
                 params[name] = []
             params[name].append((token.section_number, token))
-        for name, parts in params.items():
+        for name, parts in list(params.items()):
             parts = sorted(parts)
             # XXX: there might be more recovery we could do here if, for
             # example, this is really a case of a duplicate attribute name.

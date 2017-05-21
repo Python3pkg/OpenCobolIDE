@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """Simple command line interface to get/set password from a keyring"""
 
-from __future__ import print_function
+
 
 import getpass
 from optparse import OptionParser

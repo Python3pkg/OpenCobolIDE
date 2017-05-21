@@ -1,4 +1,4 @@
-from __future__ import print_function, absolute_import
+
 import os
 import tempfile
 import unittest
@@ -65,13 +65,13 @@ def order_future_lines(code):
     #         'the future and builtins imports are out of order'
 
     uul = sorted([lines[i] for i in uufuture_line_numbers])
-    sorted_uufuture_lines = dict(zip(uufuture_line_numbers, uul))
+    sorted_uufuture_lines = dict(list(zip(uufuture_line_numbers, uul)))
 
     fl = sorted([lines[i] for i in future_line_numbers])
-    sorted_future_lines = dict(zip(future_line_numbers, fl))
+    sorted_future_lines = dict(list(zip(future_line_numbers, fl)))
 
     bl = sorted([lines[i] for i in builtins_line_numbers])
-    sorted_builtins_lines = dict(zip(builtins_line_numbers, bl))
+    sorted_builtins_lines = dict(list(zip(builtins_line_numbers, bl)))
 
     # Replace the old unsorted "from __future__ import ..." lines with the
     # new sorted ones:
@@ -402,7 +402,7 @@ if not hasattr(unittest.TestCase, 'assertRaisesRegex'):
 # From Py3.3:
 def assertRegex(self, text, expected_regex, msg=None):
     """Fail the test unless the text matches the regular expression."""
-    if isinstance(expected_regex, (str, unicode)):
+    if isinstance(expected_regex, str):
         assert expected_regex, "expected_regex must not be empty."
         expected_regex = re.compile(expected_regex)
     if not expected_regex.search(text):
@@ -453,7 +453,7 @@ class _AssertWarnsContext(_AssertRaisesBaseContext):
     def __enter__(self):
         # The __warningregistry__'s need to be in a pristine state for tests
         # to work properly.
-        for v in sys.modules.values():
+        for v in list(sys.modules.values()):
             if getattr(v, '__warningregistry__', None):
                 v.__warningregistry__ = {}
         self.warnings_manager = warnings.catch_warnings(record=True)

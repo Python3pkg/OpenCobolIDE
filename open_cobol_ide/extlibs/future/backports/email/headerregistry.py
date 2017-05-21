@@ -7,9 +7,9 @@ Eventually HeaderRegistry will be a public API, but it isn't yet,
 and will probably change some before that happens.
 
 """
-from __future__ import unicode_literals
-from __future__ import division
-from __future__ import absolute_import
+
+
+
 
 from future.builtins import super
 from future.builtins import str

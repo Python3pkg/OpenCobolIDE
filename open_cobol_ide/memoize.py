@@ -75,14 +75,14 @@ if __name__ == '__main__':
     c = my_class()
 
     print("should take time")
-    print(c.my_func(55))
+    print((c.my_func(55)))
     print()
 
     print("should be instant")
-    print(c.my_func(55))
+    print((c.my_func(55)))
     print()
 
     c.my_func.reset()
 
     print("should take time")
-    print(c.my_func(55))
+    print((c.my_func(55)))

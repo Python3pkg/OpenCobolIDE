@@ -2,11 +2,12 @@
 Keyring implementation support
 """
 
-from __future__ import absolute_import
+
 
 import abc
 import logging
 import importlib
+import collections
 
 try:
     import pkg_resources
@@ -153,7 +154,7 @@ def _load_plugins():
         try:
             log.info('Loading %s', ep.name)
             init_func = ep.load()
-            if callable(init_func):
+            if isinstance(init_func, collections.Callable):
                 init_func()
         except Exception:
             log.exception("Error initializing plugin %s." % ep)
@@ -174,6 +175,6 @@ def get_all_keyring():
         return True
 
     all_classes = KeyringBackend._classes
-    viable_classes = filter(is_class_viable, all_classes)
+    viable_classes = list(filter(is_class_viable, all_classes))
     return list(util.suppress_exceptions(viable_classes,
         exceptions=TypeError))

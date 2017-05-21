@@ -32,7 +32,7 @@ Version History:
 
 """
 
-from __future__ import print_function
+
 
 from time import clock
 
@@ -40,7 +40,7 @@ LOOPS = 50000
 
 __version__ = "1.1"
 
-[Ident1, Ident2, Ident3, Ident4, Ident5] = range(1, 6)
+[Ident1, Ident2, Ident3, Ident4, Ident5] = list(range(1, 6))
 
 class Record(object):
 

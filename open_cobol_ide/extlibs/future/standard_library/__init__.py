@@ -58,7 +58,7 @@ We don't currently support these modules, but would like to::
 
 """
 
-from __future__ import absolute_import, division, print_function
+
 
 import sys
 import logging
@@ -248,9 +248,9 @@ class RenameImport(object):
         self.old_to_new = old_to_new
         both = set(old_to_new.keys()) & set(old_to_new.values())
         assert (len(both) == 0 and
-                len(set(old_to_new.values())) == len(old_to_new.values())), \
+                len(set(old_to_new.values())) == len(list(old_to_new.values()))), \
                'Ambiguity in renaming (handler not implemented)'
-        self.new_to_old = dict((new, old) for (old, new) in old_to_new.items())
+        self.new_to_old = dict((new, old) for (old, new) in list(old_to_new.items()))
 
     def find_module(self, fullname, path=None):
         # Handles hierarchical importing: package.module.module2
@@ -461,7 +461,7 @@ def install_aliases():
         setattr(newmod, newobjname, obj)
 
     # Hack for urllib so it appears to have the same structure on Py2 as on Py3
-    import urllib
+    import urllib.request, urllib.parse, urllib.error
     from future.backports.urllib import request
     from future.backports.urllib import response
     from future.backports.urllib import parse
@@ -493,26 +493,26 @@ def install_aliases():
 
     # Patch the dbm module so it appears to have the same structure on Py2 as on Py3
     try:
-        import dbm
+        import dbm.ndbm
     except ImportError:
         pass
     else:
         from future.moves.dbm import dumb
-        dbm.dumb = dumb
+        dbm.ndbm.dumb = dumb
         sys.modules['dbm.dumb'] = dumb
         try:
             from future.moves.dbm import gnu
         except ImportError:
             pass
         else:
-            dbm.gnu = gnu
+            dbm.ndbm.gnu = gnu
             sys.modules['dbm.gnu'] = gnu
         try:
             from future.moves.dbm import ndbm
         except ImportError:
             pass
         else:
-            dbm.ndbm = ndbm
+            dbm.ndbm.ndbm = ndbm
             sys.modules['dbm.ndbm'] = ndbm
 
     # install_aliases.run_already = True
@@ -603,7 +603,7 @@ def cache_py2_modules():
     if len(sys.py2_modules) != 0:
         return
     assert not detect_hooks()
-    import urllib
+    import urllib.request, urllib.parse, urllib.error
     sys.py2_modules['urllib'] = urllib
 
     import email

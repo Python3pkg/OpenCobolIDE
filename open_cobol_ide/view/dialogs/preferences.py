@@ -426,7 +426,7 @@ class DlgPreferences(QtWidgets.QDialog, dlg_preferences_ui.Ui_Dialog):
             self.lineEditRunTerm.setText(settings.external_terminal_command)
             self.tw_run_env.clearContents()
             self.tw_run_env.setRowCount(0)
-            for key, value in Settings().run_environemnt.items():
+            for key, value in list(Settings().run_environemnt.items()):
                 index = self.tw_run_env.rowCount()
                 self.tw_run_env.insertRow(index)
                 self.tw_run_env.setItem(

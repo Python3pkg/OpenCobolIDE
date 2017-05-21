@@ -2,10 +2,10 @@
 
 Allows fine grained feature control of how the package parses and emits data.
 """
-from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import division
-from __future__ import absolute_import
+
+
+
+
 from future.builtins import super
 from future.builtins import str
 from future.utils import with_metaclass
@@ -51,7 +51,7 @@ class _PolicyBase(object):
         See class docstring for a list of overridable attributes.
 
         """
-        for name, value in kw.items():
+        for name, value in list(kw.items()):
             if hasattr(self, name):
                 super(_PolicyBase,self).__setattr__(name, value)
             else:
@@ -61,7 +61,7 @@ class _PolicyBase(object):
 
     def __repr__(self):
         args = [ "{}={!r}".format(name, value)
-                 for name, value in self.__dict__.items() ]
+                 for name, value in list(self.__dict__.items()) ]
         return "{}({})".format(self.__class__.__name__, ', '.join(args))
 
     def clone(self, **kw):
@@ -72,9 +72,9 @@ class _PolicyBase(object):
 
         """
         newpolicy = self.__class__.__new__(self.__class__)
-        for attr, value in self.__dict__.items():
+        for attr, value in list(self.__dict__.items()):
             object.__setattr__(newpolicy, attr, value)
-        for attr, value in kw.items():
+        for attr, value in list(kw.items()):
             if not hasattr(self, attr):
                 raise TypeError(
                     "{!r} is an invalid keyword argument for {}".format(
@@ -106,7 +106,7 @@ def _append_doc(doc, added_doc):
 def _extend_docstrings(cls):
     if cls.__doc__ and cls.__doc__.startswith('+'):
         cls.__doc__ = _append_doc(cls.__bases__[0].__doc__, cls.__doc__)
-    for name, attr in cls.__dict__.items():
+    for name, attr in list(cls.__dict__.items()):
         if attr.__doc__ and attr.__doc__.startswith('+'):
             for c in (c for base in cls.__bases__ for c in base.mro()):
                 doc = getattr(getattr(c, name), '__doc__')

@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 from future.utils import PY3
 
 if PY3:
@@ -6,6 +6,6 @@ if PY3:
 else:
     __future_module__ = True
     try:
-        from cPickle import *
+        from pickle import *
     except ImportError:
         from pickle import *

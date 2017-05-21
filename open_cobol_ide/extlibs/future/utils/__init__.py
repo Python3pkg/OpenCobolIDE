@@ -165,10 +165,10 @@ else:
     def bord(s):
         return ord(s)
 
-    string_types = basestring,
-    integer_types = (int, long)
-    class_types = (type, types.ClassType)
-    text_type = unicode
+    string_types = str,
+    integer_types = (int, int)
+    class_types = (type, type)
+    text_type = str
     binary_type = str
 
 ###
@@ -185,7 +185,7 @@ if PY3:
 else:
     # Python 2
     def tobytes(s):
-        if isinstance(s, unicode):
+        if isinstance(s, str):
             return s.encode('latin-1')
         else:
             return ''.join(s)
@@ -218,7 +218,7 @@ else:
         Use this to create a Py2 native string when "from __future__ import
         unicode_literals" is in effect.
         """
-        return unicode(t).encode(encoding)
+        return str(t).encode(encoding)
 
 native_str_to_bytes.__doc__ = """
     On Py3, returns an encoded string.
@@ -239,12 +239,12 @@ if PY3:
     def lfilter(*args, **kwargs):
         return list(filter(*args, **kwargs))
 else:
-    import __builtin__
+    import builtins
     # Python 2-builtin ranges produce lists
-    lrange = __builtin__.range
-    lzip = __builtin__.zip
-    lmap = __builtin__.map
-    lfilter = __builtin__.filter
+    lrange = builtins.range
+    lzip = builtins.zip
+    lmap = builtins.map
+    lfilter = builtins.filter
 
 
 def isidentifier(s, dotted=False):
@@ -498,7 +498,7 @@ def implements_iterator(cls):
         return cls
 
 if PY3:
-    get_next = lambda x: x.next
+    get_next = lambda x: x.__next__
 else:
     get_next = lambda x: x.__next__
 
@@ -507,7 +507,7 @@ def encode_filename(filename):
     if PY3:
         return filename
     else:
-        if isinstance(filename, unicode):
+        if isinstance(filename, str):
             return filename.encode('utf-8')
         return filename
 
@@ -535,7 +535,7 @@ def istext(obj):
     after this import:
         >>> from future.builtins import str
     """
-    return isinstance(obj, type(u''))
+    return isinstance(obj, type(''))
 
 
 def isbytes(obj):
@@ -686,9 +686,9 @@ except AttributeError:
 else:
     # Python 2
     def listvalues(d):
-        return d.values()
+        return list(d.values())
     def listitems(d):
-        return d.items()
+        return list(d.items())
 
 if PY3:
     def ensure_new_type(obj):
@@ -707,11 +707,11 @@ else:
             # Upcast
             if native_type == str:  # i.e. Py2 8-bit str
                 return newbytes(obj)
-            elif native_type == unicode:
+            elif native_type == str:
                 return newstr(obj)
             elif native_type == int:
                 return newint(obj)
-            elif native_type == long:
+            elif native_type == int:
                 return newint(obj)
             elif native_type == dict:
                 return newdict(obj)

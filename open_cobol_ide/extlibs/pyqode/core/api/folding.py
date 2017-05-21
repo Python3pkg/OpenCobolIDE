@@ -2,7 +2,7 @@
 This module contains the code folding API.
 
 """
-from __future__ import print_function
+
 import logging
 import sys
 from pyqode.core.api.utils import TextBlockHelper
@@ -31,7 +31,7 @@ def print_tree(editor, file=sys.stdout, print_blocks=False):
         elif print_blocks:
             print('l%d:%s%s' %
                   (block.blockNumber() + 1, lvl, visible), file=file)
-        block = block.next()
+        block = next(block)
 
 
 def _logger():
@@ -203,7 +203,7 @@ class FoldScope(object):
 
         :return:
         """
-        return TextBlockHelper.get_fold_lvl(self._trigger.next())
+        return TextBlockHelper.get_fold_lvl(next(self._trigger))
 
     @property
     def collapsed(self):
@@ -239,7 +239,7 @@ class FoldScope(object):
         """
         ref_lvl = self.trigger_level
         first_line = self._trigger.blockNumber()
-        block = self._trigger.next()
+        block = next(self._trigger)
         last_line = block.blockNumber()
         lvl = self.scope_level
         if ref_lvl == lvl:  # for zone set programmatically such as imports
@@ -248,7 +248,7 @@ class FoldScope(object):
         while (block.isValid() and
                 TextBlockHelper.get_fold_lvl(block) > ref_lvl):
             last_line = block.blockNumber()
-            block = block.next()
+            block = next(block)
 
         if ignore_blank_lines and last_line:
             block = block.document().findBlockByNumber(last_line)
@@ -263,10 +263,10 @@ class FoldScope(object):
         """
         start, end = self.get_range()
         TextBlockHelper.set_collapsed(self._trigger, True)
-        block = self._trigger.next()
+        block = next(self._trigger)
         while block.blockNumber() <= end and block.isValid():
             block.setVisible(False)
-            block = block.next()
+            block = next(block)
 
     def unfold(self):
         """
@@ -288,24 +288,24 @@ class FoldScope(object):
         :param ignore_blank_lines: True to ignore last blank lines.
         """
         start, end = self.get_range(ignore_blank_lines=ignore_blank_lines)
-        block = self._trigger.next()
+        block = next(self._trigger)
         while block.blockNumber() <= end and block.isValid():
             yield block
-            block = block.next()
+            block = next(block)
 
     def child_regions(self):
         """
         This generator generates the list of direct child regions.
         """
         start, end = self.get_range()
-        block = self._trigger.next()
+        block = next(self._trigger)
         ref_lvl = self.scope_level
         while block.blockNumber() <= end and block.isValid():
             lvl = TextBlockHelper.get_fold_lvl(block)
             trigger = TextBlockHelper.is_fold_trigger(block)
             if lvl == ref_lvl and trigger:
                 yield FoldScope(block)
-            block = block.next()
+            block = next(block)
 
     def parent(self):
         """
@@ -335,12 +335,12 @@ class FoldScope(object):
         :return: str
         """
         ret_val = []
-        block = self._trigger.next()
+        block = next(self._trigger)
         _, end = self.get_range()
         while (block.isValid() and block.blockNumber() <= end and
                len(ret_val) < max_lines):
             ret_val.append(block.text())
-            block = block.next()
+            block = next(block)
         return '\n'.join(ret_val)
 
     @staticmethod
@@ -358,7 +358,7 @@ class FoldScope(object):
         if not TextBlockHelper.is_fold_trigger(block):
             # search level of next non blank line
             while block.text().strip() == '' and block.isValid():
-                block = block.next()
+                block = next(block)
             ref_lvl = TextBlockHelper.get_fold_lvl(block) - 1
             block = original
             while (block.blockNumber() and counter < limit and

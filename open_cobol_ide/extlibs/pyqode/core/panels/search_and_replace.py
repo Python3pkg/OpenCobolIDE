@@ -377,7 +377,7 @@ class SearchAndReplacePanel(Panel, Ui_SearchPanel):
             return
         current = self._occurrences[current_occurence]
         cursor_pos = self.editor.textCursor().position()
-        if cursor_pos not in range(current[0], current[1] + 1) or \
+        if cursor_pos not in list(range(current[0], current[1] + 1)) or \
                 current_occurence == -1:
             # search first occurrence that occurs after the cursor position
             current_occurence = 0
@@ -415,7 +415,7 @@ class SearchAndReplacePanel(Panel, Ui_SearchPanel):
             return
         current = self._occurrences[current_occurence]
         cursor_pos = self.editor.textCursor().position()
-        if cursor_pos not in range(current[0], current[1] + 1) or \
+        if cursor_pos not in list(range(current[0], current[1] + 1)) or \
                 current_occurence == -1:
             # search first occurrence that occurs before the cursor position
             current_occurence = len(self._occurrences) - 1

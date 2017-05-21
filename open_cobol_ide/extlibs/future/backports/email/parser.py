@@ -3,9 +3,9 @@
 # Contact: email-sig@python.org
 
 """A parser of RFC 2822 and MIME email messages."""
-from __future__ import unicode_literals
-from __future__ import division
-from __future__ import absolute_import
+
+
+
 
 __all__ = ['Parser', 'HeaderParser', 'BytesParser', 'BytesHeaderParser']
 

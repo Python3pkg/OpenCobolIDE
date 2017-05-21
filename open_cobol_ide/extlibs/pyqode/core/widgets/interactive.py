@@ -302,7 +302,7 @@ class InteractiveConsole(QTextEdit):
             for v in e:
                 values = v.split('=')
                 ev.insert(values[0], '='.join(values[1:]))
-            for k, v in env.items():
+            for k, v in list(env.items()):
                 ev.insert(k, v)
             self.process.setProcessEnvironment(ev)
             self._running = True

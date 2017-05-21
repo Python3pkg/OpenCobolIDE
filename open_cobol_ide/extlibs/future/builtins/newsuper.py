@@ -31,7 +31,7 @@ Excerpts from Ryan's docstring:
   that function was defined.  Yuck, but it seems to work..."
 '''
 
-from __future__ import absolute_import
+
 import sys
 from types import FunctionType
 
@@ -74,7 +74,7 @@ def newsuper(typ=_SENTINEL, type_or_obj=_SENTINEL, framedepth=1):
         #       http://psung.blogspot.com/2007/12/for-else-in-python.html
         for typ in mro:
             #  Find the class that owns the currently-executing method.
-            for meth in typ.__dict__.values():
+            for meth in list(typ.__dict__.values()):
                 # Drill down through any wrappers to the underlying func.
                 # This handles e.g. classmethod() and staticmethod().
                 try:
@@ -91,7 +91,7 @@ def newsuper(typ=_SENTINEL, type_or_obj=_SENTINEL, framedepth=1):
                                 meth = meth.__get__(type_or_obj)
                 except (AttributeError, TypeError):
                     continue
-                if meth.func_code is f.f_code:
+                if meth.__code__ is f.f_code:
                     break   # Aha!  Found you.
             else:
                 continue    #  Not found! Move onto the next class in MRO.

@@ -1,7 +1,7 @@
 """
 Simple script to install PyQt or PySide in CI (Travis and AppVeyor).
 """
-from __future__ import print_function
+
 import os
 import sys
 import subprocess

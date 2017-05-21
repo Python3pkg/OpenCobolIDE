@@ -152,7 +152,7 @@ class PathLineEdit(QtWidgets.QLineEdit):
             if system.windows and filepath.startswith('/'):
                 filepath = filepath[1:]
                 filepath = os.path.normpath(filepath)
-            print(filepath, urls)
+            print((filepath, urls))
             self.setText(filepath)
             self.setFocus()
 

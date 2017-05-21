@@ -5,7 +5,7 @@ They are very similar. The most notable difference is:
 
 - representation: trailing L in Python 2 removed in Python 3
 """
-from __future__ import division
+
 
 import struct
 import collections
@@ -23,12 +23,12 @@ class BaseNewInt(type):
     def __instancecheck__(cls, instance):
         if cls == newint:
             # Special case for Py2 short or long int
-            return isinstance(instance, (int, long))
+            return isinstance(instance, int)
         else:
             return issubclass(instance.__class__, cls)
 
 
-class newint(with_metaclass(BaseNewInt, long)):
+class newint(with_metaclass(BaseNewInt, int)):
     """
     A backport of the Python 3 int object to Py2
     """
@@ -97,25 +97,25 @@ class newint(with_metaclass(BaseNewInt, long)):
     def __add__(self, other):
         value = super(newint, self).__add__(other)
         if value is NotImplemented:
-            return long(self) + other
+            return int(self) + other
         return newint(value)
 
     def __radd__(self, other):
         value = super(newint, self).__radd__(other)
         if value is NotImplemented:
-            return other + long(self)
+            return other + int(self)
         return newint(value)
 
     def __sub__(self, other):
         value = super(newint, self).__sub__(other)
         if value is NotImplemented:
-            return long(self) - other
+            return int(self) - other
         return newint(value)
 
     def __rsub__(self, other):
         value = super(newint, self).__rsub__(other)
         if value is NotImplemented:
-            return other - long(self)
+            return other - int(self)
         return newint(value)
 
     def __mul__(self, other):
@@ -123,7 +123,7 @@ class newint(with_metaclass(BaseNewInt, long)):
         if isint(value):
             return newint(value)
         elif value is NotImplemented:
-            return long(self) * other
+            return int(self) * other
         return value
 
     def __rmul__(self, other):
@@ -131,22 +131,22 @@ class newint(with_metaclass(BaseNewInt, long)):
         if isint(value):
             return newint(value)
         elif value is NotImplemented:
-            return other * long(self)
+            return other * int(self)
         return value
 
     def __div__(self, other):
         # We override this rather than e.g. relying on object.__div__ or
         # long.__div__ because we want to wrap the value in a newint()
         # call if other is another int
-        value = long(self) / other
-        if isinstance(other, (int, long)):
+        value = int(self) / other
+        if isinstance(other, int):
             return newint(value)
         else:
             return value
 
     def __rdiv__(self, other):
-        value = other / long(self)
-        if isinstance(other, (int, long)):
+        value = other / int(self)
+        if isinstance(other, int):
             return newint(value)
         else:
             return value
@@ -155,7 +155,7 @@ class newint(with_metaclass(BaseNewInt, long)):
         # long has no __idiv__ method. Use __itruediv__ and cast back to
         # newint:
         value = self.__itruediv__(other)
-        if isinstance(other, (int, long)):
+        if isinstance(other, int):
             return newint(value)
         else:
             return value
@@ -163,7 +163,7 @@ class newint(with_metaclass(BaseNewInt, long)):
     def __truediv__(self, other):
         value = super(newint, self).__truediv__(other)
         if value is NotImplemented:
-            value = long(self) / other
+            value = int(self) / other
         return value
 
     def __rtruediv__(self, other):
@@ -171,7 +171,7 @@ class newint(with_metaclass(BaseNewInt, long)):
 
     def __itruediv__(self, other):
         # long has no __itruediv__ method
-        mylong = long(self)
+        mylong = int(self)
         mylong /= other
         return mylong
 
@@ -183,46 +183,46 @@ class newint(with_metaclass(BaseNewInt, long)):
 
     def __ifloordiv__(self, other):
         # long has no __ifloordiv__ method
-        mylong = long(self)
+        mylong = int(self)
         mylong //= other
         return newint(mylong)
 
     def __mod__(self, other):
         value = super(newint, self).__mod__(other)
         if value is NotImplemented:
-            return long(self) % other
+            return int(self) % other
         return newint(value)
 
     def __rmod__(self, other):
         value = super(newint, self).__rmod__(other)
         if value is NotImplemented:
-            return other % long(self)
+            return other % int(self)
         return newint(value)
 
     def __divmod__(self, other):
         value = super(newint, self).__divmod__(other)
         if value is NotImplemented:
-            mylong = long(self)
+            mylong = int(self)
             return (mylong // other, mylong % other)
         return (newint(value[0]), newint(value[1]))
 
     def __rdivmod__(self, other):
         value = super(newint, self).__rdivmod__(other)
         if value is NotImplemented:
-            mylong = long(self)
+            mylong = int(self)
             return (other // mylong, other % mylong)
         return (newint(value[0]), newint(value[1]))
 
     def __pow__(self, other):
         value = super(newint, self).__pow__(other)
         if value is NotImplemented:
-            return long(self) ** other
+            return int(self) ** other
         return newint(value)
 
     def __rpow__(self, other):
         value = super(newint, self).__rpow__(other)
         if value is NotImplemented:
-            return other ** long(self)
+            return other ** int(self)
         return newint(value)
 
     def __lshift__(self, other):
@@ -275,7 +275,7 @@ class newint(with_metaclass(BaseNewInt, long)):
     def __int__(self):
         return self
 
-    def __nonzero__(self):
+    def __bool__(self):
         return self.__bool__()
 
     def __bool__(self):
@@ -285,7 +285,7 @@ class newint(with_metaclass(BaseNewInt, long)):
         return super(newint, self).__nonzero__()
 
     def __native__(self):
-        return long(self)
+        return int(self)
 
     def to_bytes(self, length, byteorder='big', signed=False):
         """
@@ -352,7 +352,7 @@ class newint(with_metaclass(BaseNewInt, long)):
         """
         if byteorder not in ('little', 'big'):
             raise ValueError("byteorder must be either 'little' or 'big'")
-        if isinstance(mybytes, unicode):
+        if isinstance(mybytes, str):
             raise TypeError("cannot convert unicode objects to bytes")
         # mybytes can also be passed as a sequence of integers on Py3.
         # Test for this:

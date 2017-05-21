@@ -109,7 +109,7 @@ def cmp_name(first_node, second_node):
     if len(first_node.children) == len(second_node.children):
         for first_child, second_child in zip(first_node.children,
                                              second_node.children):
-            for key in first_child.__dict__.keys():
+            for key in list(first_child.__dict__.keys()):
                 if key.startswith('_'):
                     continue
                 if first_child.__dict__[key] != second_child.__dict__[key]:
@@ -224,7 +224,7 @@ def parse_pic_field(l, c, last_section_node, last_vars, line):
         last_vars.clear()
     else:
         # find parent level
-        levels = sorted(last_vars.keys(), reverse=True)
+        levels = sorted(list(last_vars.keys()), reverse=True)
         for lv in levels:
             if lv < lvl:
                 parent_node = last_vars[lv]
@@ -241,7 +241,7 @@ def parse_pic_field(l, c, last_section_node, last_vars, line):
     parent_node.add_child(node)
     last_vars[lvl] = node
     # remove closed variables
-    levels = sorted(last_vars.keys(), reverse=True)
+    levels = sorted(list(last_vars.keys()), reverse=True)
     for l in levels:
         if l > lvl:
             last_vars.pop(l)

@@ -109,7 +109,7 @@ def replace_pattern(tokens, new_pattern):
     """ Given a RegexLexer token dictionary 'tokens', replace all patterns that
         match the token specified in 'new_pattern' with 'new_pattern'.
     """
-    for state in tokens.values():
+    for state in list(tokens.values()):
         for index, pattern in enumerate(state):
             if isinstance(pattern, tuple) and pattern[1] == new_pattern[1]:
                 state[index] = new_pattern
@@ -217,7 +217,7 @@ class PygmentsSH(SyntaxHighlighter):
         try:
             self._lexer = get_lexer_for_filename(filename)
         except (ClassNotFound, ImportError):
-            print('class not found for url', filename)
+            print(('class not found for url', filename))
             try:
                 m = mimetypes.guess_type(filename)
                 print(m)

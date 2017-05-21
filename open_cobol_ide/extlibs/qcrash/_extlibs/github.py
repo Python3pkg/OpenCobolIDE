@@ -50,9 +50,10 @@ __version__ = '1.1.1'
 
 try:
     # Python 2
-    from urllib2 import build_opener, HTTPSHandler, Request, HTTPError
-    from urllib import quote as urlquote
-    from StringIO import StringIO
+    from urllib.request import build_opener, HTTPSHandler, Request
+    from urllib.error import HTTPError
+    from urllib.parse import quote as urlquote
+    from io import StringIO
     def bytes(string, encoding=None):
         return str(string)
 except:
@@ -61,7 +62,7 @@ except:
     from urllib.parse import quote as urlquote
     from io import StringIO
 
-import re, os, time, hmac, base64, hashlib, urllib, mimetypes, json
+import re, os, time, hmac, base64, hashlib, urllib.request, urllib.parse, urllib.error, mimetypes, json
 from collections import Iterable
 from datetime import datetime, timedelta, tzinfo
 
@@ -83,10 +84,10 @@ def _encode_params(kw):
     Encode parameters.
     '''
     args = []
-    for k, v in kw.items():
+    for k, v in list(kw.items()):
         try:
             # Python 2
-            qv = v.encode('utf-8') if isinstance(v, unicode) else str(v)
+            qv = v.encode('utf-8') if isinstance(v, str) else str(v)
         except:
             qv = v
         args.append('%s=%s' % (k, urlquote(qv)))
@@ -109,7 +110,7 @@ def _encode_json(obj):
 def _parse_json(jsonstr):
     def _obj_hook(pairs):
         o = JsonObject()
-        for k, v in pairs.items():
+        for k, v in list(pairs.items()):
             o[str(k)] = v
         return o
     return json.loads(jsonstr, object_hook=_obj_hook)

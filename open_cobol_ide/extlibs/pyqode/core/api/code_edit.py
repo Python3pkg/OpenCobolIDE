@@ -1,7 +1,7 @@
 """
 This module contains the base code editor widget.
 """
-from __future__ import print_function
+
 import os
 import sys
 try:
@@ -1253,7 +1253,7 @@ class CodeEdit(QtWidgets.QPlainTextEdit):
                 break
             if block.isVisible():
                 self._visible_blocks.append((top, block_nbr, block))
-            block = block.next()
+            block = next(block)
             top = bottom
             bottom = top + int(self.blockBoundingRect(block).height())
             block_nbr = block.blockNumber()

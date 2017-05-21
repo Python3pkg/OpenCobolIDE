@@ -23,9 +23,9 @@ necessary for proper internationalized headers; it only does dumb encoding and
 decoding.  To deal with the various line wrapping issues, use the email.header
 module.
 """
-from __future__ import unicode_literals
-from __future__ import division
-from __future__ import absolute_import
+
+
+
 from future.builtins import range
 from future.builtins import bytes
 

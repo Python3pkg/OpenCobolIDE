@@ -34,7 +34,7 @@ if utils.PY3:
     _unichr = chr
     bytes_chr = lambda code: bytes((code,))
 else:
-    _unichr = unichr
+    _unichr = chr
     bytes_chr = chr
 
 def surrogateescape_handler(exc):

@@ -66,7 +66,7 @@ class newobject(object):
     Subclasses of this class can merely define the Python 3 methods (__next__,
     __str__, and __bool__).
     """
-    def next(self):
+    def __next__(self):
         if hasattr(self, '__next__'):
             return type(self).__next__(self)
         raise TypeError('newobject is not an iterator')
@@ -78,12 +78,12 @@ class newobject(object):
             s = type(self).__str__(self)
         else:
             s = str(self)
-        if isinstance(s, unicode):
+        if isinstance(s, str):
             return s
         else:
             return s.decode('utf-8')
 
-    def __nonzero__(self):
+    def __bool__(self):
         if hasattr(self, '__bool__'):
             return type(self).__bool__(self)
         if hasattr(self, '__len__'):

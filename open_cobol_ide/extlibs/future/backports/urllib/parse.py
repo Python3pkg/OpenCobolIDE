@@ -29,7 +29,7 @@ scenarios for parsing, and for backward compatibility purposes, some
 parsing quirks from older RFCs are retained. The testcases in
 test_urlparse.py provides a good indicator of parsing behavior.
 """
-from __future__ import absolute_import, division, unicode_literals
+
 from future.builtins import bytes, chr, dict, int, range, str
 from future.utils import raise_with_traceback
 
@@ -760,7 +760,7 @@ def urlencode(query, doseq=False, safe='', encoding=None, errors=None):
     """
 
     if hasattr(query, "items"):
-        query = query.items()
+        query = list(query.items())
     else:
         # It's a bother at times that strings and string-like objects are
         # sequences.

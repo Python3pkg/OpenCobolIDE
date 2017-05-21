@@ -195,15 +195,15 @@ class Application(QtCore.QObject):
 
         # show runtime env
         if args.runtime_env:
-            print('OpenCobolIDE %s' % __version__)
-            for k, v in sorted(DlgAbout.get_runtime_env().items(),
+            print(('OpenCobolIDE %s' % __version__))
+            for k, v in sorted(list(DlgAbout.get_runtime_env().items()),
                                key=lambda x: x[0]):
-                print('%s %s' % (k, v))
+                print(('%s %s' % (k, v)))
             sys.exit(0)
 
         # show cobc runtime env
         if args.cobc_runtime_env:
-            print(DlgAbout.get_cobc_runtime_env())
+            print((DlgAbout.get_cobc_runtime_env()))
             sys.exit(0)
 
         # import preferences

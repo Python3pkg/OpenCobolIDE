@@ -6,10 +6,10 @@
 Lifted directly from rfc822.py.  This should eventually be rewritten.
 """
 
-from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import division
-from __future__ import absolute_import
+
+
+
+
 from future.builtins import int
 
 __all__ = [

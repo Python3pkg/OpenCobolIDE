@@ -19,7 +19,7 @@ _builtin_bytes = bytes
 
 if PY3:
     # We'll probably never use newstr on Py3 anyway...
-    unicode = str
+    str = str
 
 
 class BaseNewBytes(type):
@@ -79,7 +79,7 @@ class newbytes(with_metaclass(BaseNewBytes, _builtin_bytes)):
             return args[0]
         elif isinstance(args[0], _builtin_bytes):
             value = args[0]
-        elif isinstance(args[0], unicode):
+        elif isinstance(args[0], str):
             try:
                 if 'encoding' in kwargs:
                     assert encoding is None
@@ -156,19 +156,19 @@ class newbytes(with_metaclass(BaseNewBytes, _builtin_bytes)):
             newbyteskey = newbytes(key)
         return issubset(list(newbyteskey), list(self))
 
-    @no(unicode)
+    @no(str)
     def __add__(self, other):
         return newbytes(super(newbytes, self).__add__(other))
 
-    @no(unicode)
+    @no(str)
     def __radd__(self, left):
         return newbytes(left) + self
 
-    @no(unicode)
+    @no(str)
     def __mul__(self, other):
         return newbytes(super(newbytes, self).__mul__(other))
 
-    @no(unicode)
+    @no(str)
     def __rmul__(self, other):
         return newbytes(super(newbytes, self).__rmul__(other))
 
@@ -186,15 +186,15 @@ class newbytes(with_metaclass(BaseNewBytes, _builtin_bytes)):
         # Only on Py2:
         return cls(string.replace(' ', '').decode('hex'))
 
-    @no(unicode)
+    @no(str)
     def find(self, sub, *args):
         return super(newbytes, self).find(sub, *args)
 
-    @no(unicode)
+    @no(str)
     def rfind(self, sub, *args):
         return super(newbytes, self).rfind(sub, *args)
 
-    @no(unicode, (1, 2))
+    @no(str, (1, 2))
     def replace(self, old, new, *args):
         return newbytes(super(newbytes, self).replace(old, new, *args))
 
@@ -250,15 +250,15 @@ class newbytes(with_metaclass(BaseNewBytes, _builtin_bytes)):
         #     return newbytes(mybytes)
         # return newbytes(super(newstr, self).decode(encoding, errors))
 
-    @no(unicode)
+    @no(str)
     def startswith(self, prefix, *args):
         return super(newbytes, self).startswith(prefix, *args)
 
-    @no(unicode)
+    @no(str)
     def endswith(self, prefix, *args):
         return super(newbytes, self).endswith(prefix, *args)
 
-    @no(unicode)
+    @no(str)
     def split(self, sep=None, maxsplit=-1):
         # Py2 str.split() takes maxsplit as an optional parameter, not as a
         # keyword argument as in Python 3 bytes.
@@ -278,24 +278,24 @@ class newbytes(with_metaclass(BaseNewBytes, _builtin_bytes)):
         parts = super(newbytes, self).splitlines(keepends)
         return [newbytes(part) for part in parts]
 
-    @no(unicode)
+    @no(str)
     def rsplit(self, sep=None, maxsplit=-1):
         # Py2 str.rsplit() takes maxsplit as an optional parameter, not as a
         # keyword argument as in Python 3 bytes.
         parts = super(newbytes, self).rsplit(sep, maxsplit)
         return [newbytes(part) for part in parts]
 
-    @no(unicode)
+    @no(str)
     def partition(self, sep):
         parts = super(newbytes, self).partition(sep)
         return tuple(newbytes(part) for part in parts)
 
-    @no(unicode)
+    @no(str)
     def rpartition(self, sep):
         parts = super(newbytes, self).rpartition(sep)
         return tuple(newbytes(part) for part in parts)
 
-    @no(unicode, (1,))
+    @no(str, (1,))
     def rindex(self, sub, *args):
         '''
         S.rindex(sub [,start [,end]]) -> int
@@ -306,7 +306,7 @@ class newbytes(with_metaclass(BaseNewBytes, _builtin_bytes)):
         if pos == -1:
             raise ValueError('substring not found')
 
-    @no(unicode)
+    @no(str)
     def index(self, sub, *args):
         '''
         Returns index of sub in bytes.
@@ -377,11 +377,11 @@ class newbytes(with_metaclass(BaseNewBytes, _builtin_bytes)):
         A trick to cause the ``hasattr`` builtin-fn to return False for
         the 'encode' method on Py2.
         """
-        if name in ['encode', u'encode']:
+        if name in ['encode', 'encode']:
             raise AttributeError("encode method has been disabled in newbytes")
         return super(newbytes, self).__getattribute__(name)
 
-    @no(unicode)
+    @no(str)
     def rstrip(self, bytes_to_strip=None):
         """
         Strip trailing bytes contained in the argument.
@@ -389,7 +389,7 @@ class newbytes(with_metaclass(BaseNewBytes, _builtin_bytes)):
         """
         return newbytes(super(newbytes, self).rstrip(bytes_to_strip))
 
-    @no(unicode)
+    @no(str)
     def strip(self, bytes_to_strip=None):
         """
         Strip leading and trailing bytes contained in the argument.
@@ -405,7 +405,7 @@ class newbytes(with_metaclass(BaseNewBytes, _builtin_bytes)):
         """
         return newbytes(super(newbytes, self).lower())
 
-    @no(unicode)
+    @no(str)
     def upper(self):
         """
         b.upper() -> copy of b
@@ -415,7 +415,7 @@ class newbytes(with_metaclass(BaseNewBytes, _builtin_bytes)):
         return newbytes(super(newbytes, self).upper())
 
     @classmethod
-    @no(unicode)
+    @no(str)
     def maketrans(cls, frm, to):
         """
         B.maketrans(frm, to) -> translation table

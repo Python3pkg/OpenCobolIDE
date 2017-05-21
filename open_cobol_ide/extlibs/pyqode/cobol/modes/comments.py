@@ -96,7 +96,7 @@ class CommentsMode(Mode):
                 # comment
                 else:
                     if self.editor.free_format:
-                        print('indent', indent)
+                        print(('indent', indent))
                         cursor.setPosition(cursor.position() + indent)
                     else:
                         cursor.movePosition(QtGui.QTextCursor.Right, QtGui.QTextCursor.MoveAnchor, 6)

@@ -5,7 +5,7 @@ Note that this uses Python 2.7 code with the corresponding Python 3
 module names and locations.
 """
 
-from __future__ import unicode_literals
+
 
 
 _escape_map = {ord('&'): '&amp;', ord('<'): '&lt;', ord('>'): '&gt;'}

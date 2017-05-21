@@ -10,7 +10,7 @@ responses, with a status code, headers, and a body.  In some contexts,
 an application may want to handle an exception like a regular
 response.
 """
-from __future__ import absolute_import, division, unicode_literals
+
 from future import standard_library
 
 from future.backports.urllib import response as urllib_response

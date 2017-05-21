@@ -142,7 +142,7 @@ def convert_to_codec_key(value):
         'latin_1': ['iso_8859_1']
     }
 
-    for key, aliases in all_aliases.items():
+    for key, aliases in list(all_aliases.items()):
         if converted in aliases:
             return key
     return converted

@@ -63,7 +63,7 @@ class IndenterMode(Mode):
                     cursor.insertText(" ")
             else:
                 cursor.insertText('\t')
-            block = block.next()
+            block = next(block)
             i += 1
         cursor.endEditBlock()
 
@@ -99,7 +99,7 @@ class IndenterMode(Mode):
                     txt = block.text()
                     if len(txt) and txt[0] == ' ':
                         c.deleteChar()
-            block = block.next()
+            block = next(block)
             i += 1
         return cursor
 

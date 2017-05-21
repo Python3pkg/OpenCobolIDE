@@ -42,11 +42,11 @@ from future import utils
 if utils.PY2:
     from io import open
     from future_builtins import ascii, oct, hex
-    from __builtin__ import unichr as chr, pow as _builtin_pow
-    import __builtin__
+    from builtins import chr as chr, pow as _builtin_pow
+    import builtins
 
     # Only for backward compatibility with future v0.8.2:
-    isinstance = __builtin__.isinstance
+    isinstance = builtins.isinstance
 
     # Warning: Python 2's input() is unsafe and MUST not be able to be used
     # accidentally by someone who expects Python 3 semantics but forgets
@@ -72,11 +72,11 @@ if utils.PY2:
         """
         # Handle newints
         if isinstance(x, newint):
-            x = long(x)
+            x = int(x)
         if isinstance(y, newint):
-            y = long(y)
+            y = int(y)
         if isinstance(z, newint):
-            z = long(z)
+            z = int(z)
 
         try:
             if z == _SENTINEL:
@@ -101,7 +101,7 @@ else:
     chr = builtins.chr
     hex = builtins.hex
     input = builtins.input
-    next = builtins.next
+    next = builtins.__next__
     # Only for backward compatibility with future v0.8.2:
     isinstance = builtins.isinstance
     oct = builtins.oct

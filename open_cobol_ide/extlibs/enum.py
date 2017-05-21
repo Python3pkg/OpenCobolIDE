@@ -166,7 +166,7 @@ class EnumMeta(type):
             enum_member.__init__(*args)
             # If another member with the same value was already defined, the
             # new member becomes an alias to the existing one.
-            for name, canonical_member in enum_class._member_map_.items():
+            for name, canonical_member in list(enum_class._member_map_.items()):
                 if canonical_member._value_ == enum_member._value_:
                     enum_member = canonical_member
                     break
@@ -470,7 +470,7 @@ class Enum(metaclass=EnumMeta):
                 return cls._value2member_map_[value]
         except TypeError:
             # not there, now do long search -- O(n) behavior
-            for member in cls._member_map_.values():
+            for member in list(cls._member_map_.values()):
                 if member._value_ == value:
                     return member
         raise ValueError("%r is not a valid %s" % (value, cls.__name__))
@@ -544,8 +544,8 @@ class Enum(metaclass=EnumMeta):
             source = vars(source)
         else:
             source = module_globals
-        members = {name: value for name, value in source.items()
-                if filter(name)}
+        members = {name: value for name, value in list(source.items())
+                if list(filter(name))}
         cls = cls(name, members, module=module)
         cls.__reduce_ex__ = _reduce_ex_by_name
         module_globals.update(cls.__members__)
@@ -563,7 +563,7 @@ def _reduce_ex_by_name(self, proto):
 def unique(enumeration):
     """Class decorator for enumerations ensuring unique member values."""
     duplicates = []
-    for name, member in enumeration.__members__.items():
+    for name, member in list(enumeration.__members__.items()):
         if name != member.name:
             duplicates.append((name, member.name))
     if duplicates:

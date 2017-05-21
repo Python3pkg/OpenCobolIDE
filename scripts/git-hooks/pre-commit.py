@@ -28,7 +28,7 @@ def bump_version():
             new_suffix = '%s%d' % (prefix, version)
             new_string = string.replace(suffix, new_suffix)
             lines[i] = "__version__ = '%s'" % new_string
-            print(lines[i])
+            print((lines[i]))
             break
 
     with open(VERSION_FILE, 'w') as f:

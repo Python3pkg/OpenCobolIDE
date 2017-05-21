@@ -58,7 +58,7 @@ for s in get_all_styles():
         pass
     else:
         pygments_styles.append(module)
-print('pygment styles', pygments_styles)
+print(('pygment styles', pygments_styles))
 
 pygments_lexers = []
 lexers_dir = os.path.dirname(lexers.__file__)
@@ -66,7 +66,7 @@ for file in os.listdir(lexers_dir):
     name = os.path.splitext(file)[0]
     if name not in ['__pycache__']:
         pygments_lexers.append('pygments.lexers.%s' % name)
-print('pygment lexers', pygments_lexers)
+print(('pygment lexers', pygments_lexers))
 
 
 # build options

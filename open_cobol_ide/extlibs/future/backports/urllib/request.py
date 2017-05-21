@@ -84,7 +84,7 @@ f = urllib.request.urlopen('http://www.python.org/')
 # complex proxies  XXX not sure what exactly was meant by this
 # abstract factory for opener
 
-from __future__ import absolute_import, division, print_function, unicode_literals
+
 from future.builtins import bytes, dict, filter, input, int, map, open, str
 from future.utils import PY2, PY3, raise_with_traceback
 
@@ -283,7 +283,7 @@ class Request(object):
         self.data = data
         self.headers = {}
         self._tunnel_host = None
-        for key, value in headers.items():
+        for key, value in list(headers.items()):
             self.add_header(key, value)
         self.unredirected_hdrs = {}
         if origin_req_host is None:
@@ -650,7 +650,7 @@ class HTTPRedirectHandler(BaseHandler):
         # be conciliant with URIs containing a space
         newurl = newurl.replace(' ', '%20')
         CONTENT_HEADERS = ("content-length", "content-type")
-        newheaders = dict((k, v) for k, v in req.headers.items()
+        newheaders = dict((k, v) for k, v in list(req.headers.items())
                           if k.lower() not in CONTENT_HEADERS)
         return Request(newurl,
                        headers=newheaders,
@@ -804,7 +804,7 @@ class ProxyHandler(BaseHandler):
             proxies = getproxies()
         assert hasattr(proxies, 'keys'), "proxies must be a mapping"
         self.proxies = proxies
-        for type, url in proxies.items():
+        for type, url in list(proxies.items()):
             setattr(self, '%s_open' % type,
                     lambda r, proxy=url, type=type, meth=self.proxy_open:
                         meth(r, proxy, type))
@@ -857,7 +857,7 @@ class HTTPPasswordMgr(object):
         domains = self.passwd.get(realm, {})
         for default_port in True, False:
             reduced_authuri = self.reduce_uri(authuri, default_port)
-            for uris, authinfo in domains.items():
+            for uris, authinfo in list(domains.items()):
                 for uri in uris:
                     if self.is_suburi(uri, reduced_authuri):
                         return authinfo
@@ -1057,7 +1057,7 @@ class AbstractDigestAuthHandler(object):
 
     def retry_http_digest_auth(self, req, auth):
         token, challenge = auth.split(' ', 1)
-        chal = parse_keqv_list(filter(None, parse_http_list(challenge)))
+        chal = parse_keqv_list([_f for _f in parse_http_list(challenge) if _f])
         auth = self.get_authorization(req, chal)
         if auth:
             auth_val = 'Digest %s' % auth
@@ -1255,7 +1255,7 @@ class AbstractHTTPHandler(BaseHandler):
         h = http_class(host, timeout=req.timeout, **http_conn_args)
 
         headers = dict(req.unredirected_hdrs)
-        headers.update(dict((k, v) for k, v in req.headers.items()
+        headers.update(dict((k, v) for k, v in list(req.headers.items())
                             if k not in headers))
 
         # TODO(jhylton): Should this be redesigned to handle
@@ -1268,7 +1268,7 @@ class AbstractHTTPHandler(BaseHandler):
         # So make sure the connection gets closed after the (only)
         # request.
         headers["Connection"] = "close"
-        headers = dict((name.title(), val) for name, val in headers.items())
+        headers = dict((name.title(), val) for name, val in list(headers.items()))
 
         if req._tunnel_host:
             tunnel_headers = {}
@@ -1569,7 +1569,7 @@ class CacheFTPHandler(FTPHandler):
             self.soonest = min(list(self.timeout.values()))
 
     def clear_cache(self):
-        for conn in self.cache.values():
+        for conn in list(self.cache.values()):
             conn.close()
         self.cache.clear()
         self.timeout.clear()
@@ -1977,7 +1977,7 @@ class URLopener(object):
         # XXX thread unsafe!
         if len(self.ftpcache) > MAXFTPCACHE:
             # Prune the cache, rather arbitrarily
-            for k in self.ftpcache.keys():
+            for k in list(self.ftpcache.keys()):
                 if k != key:
                     v = self.ftpcache[k]
                     del self.ftpcache[k]
@@ -2248,7 +2248,7 @@ class FancyURLopener(URLopener):
         """Override this in a GUI environment!"""
         import getpass
         try:
-            user = input("Enter username for %s at %s: " % (realm, host))
+            user = eval(input("Enter username for %s at %s: " % (realm, host)))
             passwd = getpass.getpass("Enter password for %s in %s at %s: " %
                 (user, realm, host))
             return user, passwd
@@ -2402,7 +2402,7 @@ def getproxies_environment():
 
     """
     proxies = {}
-    for name, value in os.environ.items():
+    for name, value in list(os.environ.items()):
         name = name.lower()
         if value and name[-6:] == '_proxy':
             proxies[name[:-6]] = value

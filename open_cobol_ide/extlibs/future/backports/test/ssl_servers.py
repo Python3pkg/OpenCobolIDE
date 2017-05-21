@@ -1,4 +1,4 @@
-from __future__ import absolute_import, division, print_function, unicode_literals
+
 from future.builtins import filter, str
 from future import utils
 import os
@@ -65,7 +65,7 @@ class RootedHTTPRequestHandler(SimpleHTTPRequestHandler):
         path = urllib.parse.urlparse(path)[2]
         path = os.path.normpath(urllib.parse.unquote(path))
         words = path.split('/')
-        words = filter(None, words)
+        words = [_f for _f in words if _f]
         path = self.root
         for word in words:
             drive, word = os.path.splitdrive(word)
@@ -191,7 +191,7 @@ if __name__ == "__main__":
     else:
         handler_class = RootedHTTPRequestHandler
         if utils.PY2:
-            handler_class.root = os.getcwdu()
+            handler_class.root = os.getcwd()
         else:
             handler_class.root = os.getcwd()
     context = ssl.SSLContext(ssl.PROTOCOL_TLSv1)

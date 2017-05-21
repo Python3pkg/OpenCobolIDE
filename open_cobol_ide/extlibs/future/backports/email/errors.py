@@ -3,9 +3,9 @@
 # Contact: email-sig@python.org
 
 """email package exception classes."""
-from __future__ import unicode_literals
-from __future__ import division
-from __future__ import absolute_import
+
+
+
 from future.builtins import super
 
 

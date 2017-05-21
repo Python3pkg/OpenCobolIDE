@@ -62,7 +62,7 @@ def init_backend(limit=None):
     """
     Load a keyring specified in the config file or infer the best available.
     """
-    keyrings = filter(limit, backend.get_all_keyring())
+    keyrings = list(filter(limit, backend.get_all_keyring()))
 
     set_keyring(
         load_config()

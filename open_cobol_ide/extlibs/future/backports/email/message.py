@@ -4,7 +4,7 @@
 # Contact: email-sig@python.org
 
 """Basic message object for the email package object model."""
-from __future__ import absolute_import, division, unicode_literals
+
 from future.builtins import list, range, str, zip
 
 __all__ = ['Message']
@@ -488,7 +488,7 @@ class Message(object):
                        filename='Fußballer.ppt'))
         """
         parts = []
-        for k, v in _params.items():
+        for k, v in list(_params.items()):
             if v is None:
                 parts.append(k.replace('_', '-'))
             else:
@@ -505,7 +505,7 @@ class Message(object):
         raised.
         """
         _name = _name.lower()
-        for i, (k, v) in zip(range(len(self._headers)), self._headers):
+        for i, (k, v) in zip(list(range(len(self._headers))), self._headers):
             if k.lower() == _name:
                 self._headers[i] = self.policy.header_store_parse(k, _value)
                 break

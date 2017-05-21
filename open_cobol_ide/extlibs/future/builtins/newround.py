@@ -76,7 +76,7 @@ def from_float_26(f):
     import math as _math
     from decimal import _dec_from_triple    # only available on Py2.6 and Py2.7 (not 3.3)
 
-    if isinstance(f, (int, long)):        # handle integer inputs
+    if isinstance(f, int):        # handle integer inputs
         return Decimal(f)
     if _math.isinf(f) or _math.isnan(f):  # raises TypeError if not a float
         return Decimal(repr(f))

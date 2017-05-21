@@ -190,7 +190,7 @@ class BaseTabWidget(QtWidgets.QTabWidget):
         """
         current_widget = self.widget(self.tab_under_menu())
         index = self.indexOf(current_widget)
-        if self._try_close_dirty_tabs(tab_range=range(index)):
+        if self._try_close_dirty_tabs(tab_range=list(range(index))):
             while True:
                 widget = self.widget(0)
                 if widget != current_widget:
@@ -204,7 +204,7 @@ class BaseTabWidget(QtWidgets.QTabWidget):
         """
         current_widget = self.widget(self.tab_under_menu())
         index = self.indexOf(current_widget)
-        if self._try_close_dirty_tabs(tab_range=range(index + 1, self.count())):
+        if self._try_close_dirty_tabs(tab_range=list(range(index + 1, self.count()))):
             while True:
                 widget = self.widget(self.count() - 1)
                 if widget != current_widget:
@@ -379,7 +379,7 @@ class BaseTabWidget(QtWidgets.QTabWidget):
         widgets = []
         filenames = []
         if tab_range is None:
-            tab_range = range(self.count())
+            tab_range = list(range(self.count()))
         for i in tab_range:
             widget = self.widget(i)
             try:
@@ -1289,7 +1289,7 @@ class SplittableCodeEditTabWidget(SplittableTabWidget):
             widget constructor.
         :return: Code editor widget instance.
         """
-        if mimetype in self.editors.keys():
+        if mimetype in list(self.editors.keys()):
             return self.editors[mimetype](
                 *args, parent=self.main_tab_widget, **kwargs)
         editor = self.fallback_editor(*args, parent=self.main_tab_widget,

@@ -19,9 +19,9 @@ if PY3:
         return chr(c)
 else:
     def u(s):
-        return unicode(s, "unicode_escape")
+        return str(s, "unicode_escape")
     def _unichr(c):
-        return unichr(c)
+        return chr(c)
 
 LEGAL_CHARS = (
     getattr(string, 'letters', None)  # Python 2

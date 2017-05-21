@@ -3,7 +3,7 @@
 # Contact: email-sig@python.org
 
 """Base class for MIME specializations."""
-from __future__ import absolute_import, division, unicode_literals
+
 from future.backports.email import message
 
 __all__ = ['MIMEBase']

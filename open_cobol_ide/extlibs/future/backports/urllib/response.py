@@ -5,7 +5,7 @@ including read() and readline().  The typical response object is an
 addinfourl instance, which defines an info() method that returns
 headers and a geturl() method that returns the url.
 """
-from __future__ import absolute_import, division, unicode_literals
+
 from future.builtins import object
 
 class addbase(object):

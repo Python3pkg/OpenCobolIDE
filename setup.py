@@ -32,8 +32,8 @@ class PyTest(TestCommand):
             self.pytest_args = self.pytest_args.replace('"', '').split(' ')
         else:
             self.pytest_args = []
-        print('running test command: py.test "%s"' % ' '.join(
-            self.pytest_args))
+        print(('running test command: py.test "%s"' % ' '.join(
+            self.pytest_args)))
         errno = pytest.main(self.pytest_args)
         sys.exit(errno)
 

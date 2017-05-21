@@ -39,7 +39,7 @@ class Settings(object):
         """
         Imports all settings from a dict of strings
         """
-        for k, v in dic.items():
+        for k, v in list(dic.items()):
             self._settings.setValue(k, v)
 
     # Geometry and state (visible windows, ...) + working settings (last path)

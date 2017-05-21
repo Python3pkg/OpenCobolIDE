@@ -127,10 +127,10 @@ the value to a string, when the values are set dictionary-style.
 
 Finis.
 """
-from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import division
-from __future__ import absolute_import
+
+
+
+
 from future.builtins import chr, dict, int, str
 from future.utils import PY2, as_native_str
 
@@ -383,7 +383,7 @@ class Morsel(dict):
 
     @as_native_str()
     def __repr__(self):
-        if PY2 and isinstance(self.value, unicode):
+        if PY2 and isinstance(self.value, str):
             val = str(self.value)    # make it a newstr to remove the u prefix
         else:
             val = self.value
@@ -517,7 +517,7 @@ class BaseCookie(dict):
         l = []
         items = sorted(self.items())
         for key, value in items:
-            if PY2 and isinstance(value.value, unicode):
+            if PY2 and isinstance(value.value, str):
                 val = str(value.value)    # make it a newstr to remove the u prefix
             else:
                 val = value.value
@@ -542,7 +542,7 @@ class BaseCookie(dict):
             self.__parse_string(rawdata)
         else:
             # self.update() wouldn't call our custom __setitem__
-            for key, value in rawdata.items():
+            for key, value in list(rawdata.items()):
                 self[key] = value
         return
 

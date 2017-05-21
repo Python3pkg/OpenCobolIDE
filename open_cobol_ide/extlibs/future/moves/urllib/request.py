@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 
 from future.standard_library import suspend_hooks
 from future.utils import PY3
@@ -37,7 +37,7 @@ else:
     with suspend_hooks():
         from urllib import *
         from urllib2 import *
-        from urlparse import *
+        from urllib.parse import *
 
         # Rename:
         from urllib import toBytes    # missing from __all__ on Py2.6

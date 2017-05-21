@@ -132,7 +132,7 @@ class ColorScheme(object):
         # highlight
         self.formats['highlight'] = self._get_format_from_color(
             style.highlight_color)
-        for key, token in COLOR_SCHEME_KEYS.items():
+        for key, token in list(COLOR_SCHEME_KEYS.items()):
             if token and key:
                 self.formats[key] = self._get_format_from_style(token, style)
 

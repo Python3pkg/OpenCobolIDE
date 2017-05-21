@@ -12,7 +12,7 @@
     :license: BSD, see LICENSE for details.
 """
 
-from __future__ import print_function
+
 
 FUNCTIONS = (
     'OnEntityCreated',

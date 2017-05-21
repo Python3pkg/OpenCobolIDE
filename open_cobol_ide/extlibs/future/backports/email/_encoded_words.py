@@ -4,9 +4,9 @@ This is currently a package-private API, but will be considered for promotion
 to a public API if there is demand.
 
 """
-from __future__ import unicode_literals
-from __future__ import division
-from __future__ import absolute_import
+
+
+
 from future.builtins import bytes
 from future.builtins import chr
 from future.builtins import int

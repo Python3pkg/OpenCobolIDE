@@ -70,13 +70,13 @@ class ModesManager(Manager):
         """
         Returns the list of the names of the installed modes.
         """
-        return self._modes.keys()
+        return list(self._modes.keys())
 
     def values(self):
         """
         Returns the list of installed modes.
         """
-        return self._modes.values()
+        return list(self._modes.values())
 
     def __len__(self):
         return len(list(self._modes.values()))

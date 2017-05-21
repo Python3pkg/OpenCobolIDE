@@ -46,11 +46,11 @@ class newdict(with_metaclass(BaseNewDict, _builtin_dict)):
             D.items() -> an iterator over D's items
         """
         if ver == (2, 7):
-            return self.viewitems()
-        elif ver == (2, 6):
-            return self.iteritems()
-        elif ver >= (3, 0):
             return self.items()
+        elif ver == (2, 6):
+            return iter(self.items())
+        elif ver >= (3, 0):
+            return list(self.items())
 
     def keys(self):
         """
@@ -60,11 +60,11 @@ class newdict(with_metaclass(BaseNewDict, _builtin_dict)):
             D.keys() -> an iterator over D's keys
         """
         if ver == (2, 7):
-            return self.viewkeys()
-        elif ver == (2, 6):
-            return self.iterkeys()
-        elif ver >= (3, 0):
             return self.keys()
+        elif ver == (2, 6):
+            return iter(self.keys())
+        elif ver >= (3, 0):
+            return list(self.keys())
 
     def values(self):
         """
@@ -74,11 +74,11 @@ class newdict(with_metaclass(BaseNewDict, _builtin_dict)):
             D.values() -> an iterator over D's values
         """
         if ver == (2, 7):
-            return self.viewvalues()
-        elif ver == (2, 6):
-            return self.itervalues()
-        elif ver >= (3, 0):
             return self.values()
+        elif ver == (2, 6):
+            return iter(self.values())
+        elif ver >= (3, 0):
+            return list(self.values())
 
     def __new__(cls, *args, **kwargs):
         """

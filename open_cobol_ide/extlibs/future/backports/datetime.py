@@ -3,10 +3,10 @@
 See http://www.iana.org/time-zones/repository/tz-link.html for
 time zone and DST data sources.
 """
-from __future__ import division
-from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import absolute_import
+
+
+
+
 from future.builtins import str
 from future.builtins import bytes
 from future.builtins import map

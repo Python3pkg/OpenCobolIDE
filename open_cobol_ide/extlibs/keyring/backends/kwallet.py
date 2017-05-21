@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 
 from ..backend import KeyringBackend
 from ..errors import PasswordDeleteError
@@ -42,7 +42,7 @@ class DBusKeyring(KeyringBackend):
             entry_list = self.iface.readPasswordList(
                     self.handle, old_folder, '*@*', self.appid)
 
-            for entry in entry_list.items():
+            for entry in list(entry_list.items()):
                 key = entry[0]
                 password = entry[1]
 

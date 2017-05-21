@@ -29,13 +29,13 @@ class EzhilLexer(RegexLexer):
     flags = re.MULTILINE | re.UNICODE
     # Refer to tamil.utf8.tamil_letters from open-tamil for a stricter version of this.
     # This much simpler version is close enough, and includes combining marks.
-    _TALETTERS = u'[a-zA-Z_]|[\u0b80-\u0bff]'
+    _TALETTERS = '[a-zA-Z_]|[\u0b80-\u0bff]'
     tokens = {
         'root': [
             include('keywords'),
             (r'#.*\n', Comment.Single),
             (r'[@+/*,^\-%]|[!<>=]=?|&&?|\|\|?', Operator),
-            (u'இல்', Operator.Word),
+            ('இல்', Operator.Word),
             (words(('assert', 'max', 'min',
                     'நீளம்','சரம்_இடமாற்று','சரம்_கண்டுபிடி',
                     'பட்டியல்','பின்இணை','வரிசைப்படுத்து',
@@ -51,10 +51,10 @@ class EzhilLexer(RegexLexer):
             (r'[(){}\[\]:;.]', Punctuation),
         ],
         'keywords': [
-            (u'பதிப்பி|தேர்ந்தெடு|தேர்வு|ஏதேனில்|ஆனால்|இல்லைஆனால்|இல்லை|ஆக|ஒவ்வொன்றாக|இல்|வரை|செய்|முடியேனில்|பின்கொடு|முடி|நிரல்பாகம்|தொடர்|நிறுத்து|நிரல்பாகம்', Keyword),
+            ('பதிப்பி|தேர்ந்தெடு|தேர்வு|ஏதேனில்|ஆனால்|இல்லைஆனால்|இல்லை|ஆக|ஒவ்வொன்றாக|இல்|வரை|செய்|முடியேனில்|பின்கொடு|முடி|நிரல்பாகம்|தொடர்|நிறுத்து|நிரல்பாகம்', Keyword),
         ],
         'identifier': [
-            (u'(?:'+_TALETTERS+u')(?:[0-9]|'+_TALETTERS+u')*', Name),
+            ('(?:'+_TALETTERS+')(?:[0-9]|'+_TALETTERS+')*', Name),
         ],
         'literal': [
             (r'".*?"', String),

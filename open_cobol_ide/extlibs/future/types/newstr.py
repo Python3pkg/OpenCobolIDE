@@ -50,18 +50,18 @@ from future.types.newobject import newobject
 
 if PY3:
     # We'll probably never use newstr on Py3 anyway...
-    unicode = str
+    str = str
 
 
 class BaseNewStr(type):
     def __instancecheck__(cls, instance):
         if cls == newstr:
-            return isinstance(instance, unicode)
+            return isinstance(instance, str)
         else:
             return issubclass(instance.__class__, cls)
 
 
-class newstr(with_metaclass(BaseNewStr, unicode)):
+class newstr(with_metaclass(BaseNewStr, str)):
     """
     A backport of the Python 3 str object to Py2
     """
@@ -90,7 +90,7 @@ class newstr(with_metaclass(BaseNewStr, unicode)):
         # other objects like list or dict.
         elif type(args[0]) == newstr and cls == newstr:
             return args[0]
-        elif isinstance(args[0], unicode):
+        elif isinstance(args[0], str):
             value = args[0]
         elif isinstance(args[0], bytes):   # i.e. Py2 bytes or newbytes
             if 'encoding' in kwargs or len(args) > 1:
@@ -123,7 +123,7 @@ class newstr(with_metaclass(BaseNewStr, unicode)):
         # newstr, not Python 2 unicode:
         if type(key) == newstr:
             newkey = key
-        elif isinstance(key, unicode) or isinstance(key, bytes) and not isnewbytes(key):
+        elif isinstance(key, str) or isinstance(key, bytes) and not isnewbytes(key):
             newkey = newstr(key)
         else:
             raise TypeError(errmsg.format(type(key)))
@@ -286,14 +286,14 @@ class newstr(with_metaclass(BaseNewStr, unicode)):
         return [newstr(part) for part in parts]
 
     def __eq__(self, other):
-        if (isinstance(other, unicode) or
+        if (isinstance(other, str) or
             isinstance(other, bytes) and not isnewbytes(other)):
             return super(newstr, self).__eq__(other)
         else:
             return False
 
     def __ne__(self, other):
-        if (isinstance(other, unicode) or
+        if (isinstance(other, str) or
             isinstance(other, bytes) and not isnewbytes(other)):
             return super(newstr, self).__ne__(other)
         else:
@@ -326,7 +326,7 @@ class newstr(with_metaclass(BaseNewStr, unicode)):
         A trick to cause the ``hasattr`` builtin-fn to return False for
         the 'decode' method on Py2.
         """
-        if name in ['decode', u'decode']:
+        if name in ['decode', 'decode']:
             raise AttributeError("decode method has been disabled in newstr")
         return super(newstr, self).__getattribute__(name)
 
@@ -334,7 +334,7 @@ class newstr(with_metaclass(BaseNewStr, unicode)):
         """
         A hook for the future.utils.native() function.
         """
-        return unicode(self)
+        return str(self)
 
     @staticmethod
     def maketrans(x, y=None, z=None):
@@ -355,12 +355,12 @@ class newstr(with_metaclass(BaseNewStr, unicode)):
             if not isinstance(x, dict):
                 raise TypeError('if you give only one argument to maketrans it must be a dict')
             result = {}
-            for (key, value) in x.items():
+            for (key, value) in list(x.items()):
                 if len(key) > 1:
                     raise ValueError('keys in translate table must be strings or integers')
                 result[ord(key)] = value
         else:
-            if not isinstance(x, unicode) and isinstance(y, unicode):
+            if not isinstance(x, str) and isinstance(y, str):
                 raise TypeError('x and y must be unicode strings')
             if not len(x) == len(y):
                 raise ValueError('the first two maketrans arguments must have equal length')
@@ -391,7 +391,7 @@ class newstr(with_metaclass(BaseNewStr, unicode)):
                 val = table[ord(c)]
                 if val is None:
                     continue
-                elif isinstance(val, unicode):
+                elif isinstance(val, str):
                     l.append(val)
                 else:
                     l.append(chr(val))

@@ -757,7 +757,7 @@ class TextHelper(object):
             Removes any ignored symbol from the match dict.
             """
             if ignored_symbols is not None:
-                for symbol in matching.keys():
+                for symbol in list(matching.keys()):
                     if symbol in ignored_symbols:
                         matching.pop(symbol)
             return matching
@@ -770,7 +770,7 @@ class TextHelper(object):
             """
             start_pos = None
             opening_char = None
-            closed = {k: 0 for k in matching.values()
+            closed = {k: 0 for k in list(matching.values())
                       if k not in ['"', "'"]}
             # go left
             stop = False
@@ -778,11 +778,11 @@ class TextHelper(object):
                 cursor.clearSelection()
                 cursor.movePosition(cursor.Left, cursor.KeepAnchor)
                 char = cursor.selectedText()
-                if char in closed.keys():
+                if char in list(closed.keys()):
                     closed[char] += 1
-                elif char in matching.keys():
+                elif char in list(matching.keys()):
                     opposite = matching[char]
-                    if opposite in closed.keys() and closed[opposite]:
+                    if opposite in list(closed.keys()) and closed[opposite]:
                         closed[opposite] -= 1
                         continue
                     else:
@@ -803,19 +803,19 @@ class TextHelper(object):
             """
             end_pos = None
             cursor.setPosition(original_pos)
-            rev_matching = {v: k for k, v in matching.items()}
-            opened = {k: 0 for k in rev_matching.values()
+            rev_matching = {v: k for k, v in list(matching.items())}
+            opened = {k: 0 for k in list(rev_matching.values())
                       if k not in ['"', "'"]}
             stop = False
             while not stop and not cursor.atEnd():
                 cursor.clearSelection()
                 cursor.movePosition(cursor.Right, cursor.KeepAnchor)
                 char = cursor.selectedText()
-                if char in opened.keys():
+                if char in list(opened.keys()):
                     opened[char] += 1
-                elif char in rev_matching.keys():
+                elif char in list(rev_matching.keys()):
                     opposite = rev_matching[char]
-                    if opposite in opened.keys() and opened[opposite]:
+                    if opposite in list(opened.keys()) and opened[opposite]:
                         opened[opposite] -= 1
                         continue
                     elif matching[opening_char] == char:

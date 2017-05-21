@@ -87,7 +87,7 @@ docstring for more details.
 
 """
 
-from __future__ import absolute_import, division, print_function
+
 
 import functools
 from numbers import Integral
@@ -247,12 +247,12 @@ else:
     newtypes = {bytes: newbytes,
                 dict: newdict,
                 int: newint,
-                long: newint,
+                int: newint,
                 list: newlist,
                 object: newobject,
                 range: newrange,
                 str: newbytes,
-                unicode: newstr}
+                str: newstr}
 
     __all__ = ['newbytes', 'newdict', 'newint', 'newlist', 'newrange', 'newstr', 'newtypes']
 
